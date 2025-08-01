@@ -20,7 +20,7 @@ export default function Register({ onRegister, onSwitch }) {
   }
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Register</h2>
       {msg && <div>{msg}</div>}
       <input placeholder="Email"    value={email} onChange={e => setEmail(e.target.value)} />
