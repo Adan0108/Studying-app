@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { apiFetch }    from '../../utils/apiClient';
-import StudyTimer      from './StudyTimer';
-import ToggleSwitch    from './ToggleSwitch';
-import TodoList        from './TodoList/TodoList';
-import BlockList       from './BlockList';
+import { apiFetch } from '../../utils/apiClient';
+import StudyTimer from './StudyTimer';
+import ToggleSwitch from './ToggleSwitch';
+import BlockList from './BlockList';
 import ShimejiBox from './ShimejiBox';
 
 export default function MainDashboard({ user, onLogout }) {
@@ -12,10 +11,10 @@ export default function MainDashboard({ user, onLogout }) {
 
   const loadToday = () => {
     apiFetch('/api/time?page=1').then(data => {
-      const today = new Date().toISOString().slice(0,10);
+      const today = new Date().toISOString().slice(0, 10);
       const sum = data.entries
-        .filter(e => e.createdAt.slice(0,10) === today)
-        .reduce((acc,e) => acc + e.workingDuration, 0);
+        .filter(e => e.createdAt.slice(0, 10) === today)
+        .reduce((acc, e) => acc + e.workingDuration, 0);
       setTotalToday(sum);
     });
   };
@@ -32,14 +31,14 @@ export default function MainDashboard({ user, onLogout }) {
       {/* Toggle to show/hide the blocklist manager */}
       <button
         style={{
-          display:'block',
-          margin:'8px auto',
-          padding:'6px 12px',
-          background:'#409eff',
-          color:'#fff',
-          border:'none',
-          borderRadius:'4px',
-          cursor:'pointer'
+          display: 'block',
+          margin: '8px auto',
+          padding: '6px 12px',
+          background: '#409eff',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
         }}
         onClick={() => setShowBlocks(b => !b)}
       >
@@ -49,9 +48,33 @@ export default function MainDashboard({ user, onLogout }) {
       {showBlocks && <BlockList />}
 
       <h3>To-Do</h3>
-      <TodoList />
+
+      <button
+        className="btn-secondary"
+        style={{ marginBottom: 8 }}
+        onClick={() => {
+         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+           const tabId = tabs?.[0]?.id;
+           if (tabId) chrome.runtime.sendMessage({ type: 'OPEN_TODO_NOTE', tabId });
+         });
+        }}
+      >
+         Open To-Do Note
+       </button>
+
+      <button
+        style={{ marginLeft: 8 }}
+               onClick={() => {
+         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+           const tabId = tabs?.[0]?.id;
+           if (tabId) chrome.runtime.sendMessage({ type: 'CLOSE_TODO_NOTE', tabId });
+         });
+       }}
+      >
+         Close To-Do Note
+       </button>
       <h3>Companion</h3>
-      <ShimejiBox/>
+      <ShimejiBox />
     </div>
   );
 }

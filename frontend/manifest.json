@@ -50,7 +50,8 @@
       "js": [
         "webBlocker.bundle.js",
         "shimeji.bundle.js",
-        "timerBar.bundle.js"
+        "timerBar.bundle.js",
+        "todoNote.bundle.js"
       ]
     }
   ],

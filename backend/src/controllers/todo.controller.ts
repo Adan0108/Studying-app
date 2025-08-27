@@ -91,3 +91,16 @@ export async function removeTodo(req: AuthedRequest, res: Response) {
     return res.status(500).json({ message: err.message });
   }
 }
+
+// add this just under markTodoComplete
+export async function markTodoIncomplete(req: AuthedRequest, res: Response) {
+  const { id } = req.params;
+  try {
+    const updated = await updateTodo(req.user!.id, id, { completed: false });
+    if (!updated) return res.status(404).json({ message: "Not found" });
+    return res.json(updated);
+  } catch (err: any) {
+    return res.status(500).json({ message: err.message });
+  }
+}
+

@@ -27,7 +27,13 @@ export async function apiFetch(path, options = {}) {
 
   // if backend sent new access token, store it
   const newAccess = res.headers.get('x-access-token');
-  if (newAccess) localStorage.setItem('accessToken', newAccess);
+  if (newAccess) {
+    localStorage.setItem('accessToken', newAccess);
+    // Mirror to chrome.storage so background/content can read
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      chrome.storage.local.set({ accessToken: newAccess });
+    }
+  }
 
   if (res.status === 401) {
     // unauthorized: tokens invalid → clear and reload popup

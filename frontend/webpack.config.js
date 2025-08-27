@@ -9,7 +9,8 @@ module.exports = {
     background: './src/background/background.js',
     timerBar:   './src/content/timerBar.js',
     webBlocker: './src/content/webBlocker.js',
-    shimeji:    './src/content/shimeji.js'
+    shimeji:    './src/content/shimeji.js',
+    todoNote:   './src/content/todoNote.js'
   },
   output: {
     filename: '[name].bundle.js',
