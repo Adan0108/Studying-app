@@ -19,6 +19,7 @@
   // ---- Tunables ----
   const FPS_IMG = 8;
   const FRAME_MS = 1000 / FPS_IMG;
+  const CLIMB_IMG_PUSH = 18;
 
   // (5) 25% slower
   const WALK_SPEED  = 90;  // was 120
@@ -414,6 +415,7 @@
       const idx = (this.state === 'cling') ? this.clingFrame : this.frame;
       this.img.src = arr[idx] || arr[0];
 
+      // Decide facing: base art faces LEFT; flip when facing RIGHT
       let faceRight = false;
       if (this.state === 'walk') faceRight = (this.dir === 'right');
       if (this.state === 'climb_up' || this.state === 'climb_down' || this.state === 'cling') {
@@ -422,8 +424,19 @@
       }
       if (this.state === 'jump') faceRight = (this.vx > 0);
 
+      // Apply mirror
       this.img.style.transform = faceRight ? 'scaleX(-1)' : 'scaleX(1)';
+
+      // NEW: push the image a little INTO the wall for more natural “grip”
+      // (use margin-left so it’s independent of transforms & physics)
+      let push = 0;
+      if (this.state === 'climb_up' || this.state === 'climb_down' || this.state === 'cling') {
+        if (this.nearRightWall())      push =  +CLIMB_IMG_PUSH;  // move PNG a bit right
+        else if (this.nearLeftWall())  push =  -CLIMB_IMG_PUSH;  // move PNG a bit left
+      }
+      this.img.style.marginLeft = `${push}px`;
     }
+
 
     render() {
       this.root.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
