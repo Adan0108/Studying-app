@@ -18,7 +18,11 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/images/webblocking.png"
+        "assets/images/webblocking.png",
+        "assets/shimeji/*",
+        "assets/shimeji/**/*",
+        "assets/icons/*",
+        "assets/images/*"
       ],
       "matches": [
         "<all_urls>"

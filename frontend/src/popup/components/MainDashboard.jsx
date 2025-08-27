@@ -4,6 +4,7 @@ import StudyTimer      from './StudyTimer';
 import ToggleSwitch    from './ToggleSwitch';
 import TodoList        from './TodoList/TodoList';
 import BlockList       from './BlockList';
+import ShimejiBox from './ShimejiBox';
 
 export default function MainDashboard({ user, onLogout }) {
   const [totalToday, setTotalToday] = useState(0);
@@ -49,6 +50,8 @@ export default function MainDashboard({ user, onLogout }) {
 
       <h3>To-Do</h3>
       <TodoList />
+      <h3>Companion</h3>
+      <ShimejiBox/>
     </div>
   );
 }
